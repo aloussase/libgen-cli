@@ -14,7 +14,7 @@ usage =
   putStrLn $
     mconcat
       [ "Usage of libgen-cli:\n",
-        "   libgen-cli [--help] [--yaml] [-d] query\n\n",
+        "   libgen-cli [--help] [--yaml] [-d,--download <url>] [query]\n\n",
         "Flags:\n",
         "   --help          show this message and exit\n",
         "   --yaml          print the results as YAML\n",
@@ -28,6 +28,8 @@ printBooks fmt (Just books) = forM_ books (putStrLn . (format fmt))
 processArgs :: [String] -> IO ()
 processArgs [query] = getBooks query >>= (printBooks Table)
 processArgs [query, "--yaml"] = getBooks query >>= (printBooks YAML)
+processArgs ["--download", url] = undefined
+processArgs ["-d", url] = undefined
 processArgs _ = usage
 
 main :: IO ()

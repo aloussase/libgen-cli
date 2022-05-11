@@ -34,9 +34,9 @@ instance BookFormatter Table where
     fmt $
       mconcat
         [ build bookUrl,
-          " " +| build (show bookTitle),
-          " " +| build (show $ getBookAuthor bookAuthors),
-          " " +| build bookYear,
-          " " +| build bookExtension,
-          " " +| build (show bookSize)
+          "|" +| build bookTitle,
+          "|" +| build (getBookAuthor bookAuthors),
+          "|" +| build bookYear,
+          "|" +| build bookExtension,
+          "|" +| build bookSize
         ]

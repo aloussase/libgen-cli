@@ -1,0 +1,17 @@
+libgen-cli
+==========
+
+This is a CLI tool for downloading books from libgen.is. It is built with the
+UNIX philosophy in mind, which means it works well with other tools such as awk.
+
+Example:
+
+    libgen-cli java | awk -F'|' '$5 ~ /pdf/ {print $1}' | libgen-cli --download
+
+
+Run libgen-cli --help to see other options.
+
+LICENSE
+-------
+
+MIT
