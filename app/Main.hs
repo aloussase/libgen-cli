@@ -2,25 +2,33 @@ module Main where
 
 import Control.Monad
 import Data.Functor
-import Fmt
+import Fmt hiding (format)
+import Formatters
 import Libgen
 import System.Environment
 import System.IO
+import Text.Read (readMaybe)
 
-banner :: String
-banner = "Welcome to Libgen CLI!\n"
+usage :: IO ()
+usage =
+  putStrLn $
+    mconcat
+      [ "Usage of libgen-cli:\n",
+        "   libgen-cli [--help] [--yaml] [-d] query\n\n",
+        "Flags:\n",
+        "   --help          show this message and exit\n",
+        "   --yaml          print the results as YAML\n",
+        "   -d,--download   download the book\n"
+      ]
 
-prompt :: String -> IO Query
-prompt p = putStr p >> hFlush stdout >> getLine
+printBooks :: (BookFormatter f) => f -> Maybe [Book] -> IO ()
+printBooks _ Nothing = pure ()
+printBooks fmt (Just books) = forM_ books (putStrLn . (format fmt))
 
-printBooks :: Maybe [Book] -> IO ()
-printBooks (Just books) = forM_ books (fmtLn . build)
-printBooks Nothing = pure ()
+processArgs :: [String] -> IO ()
+processArgs [query] = getBooks query >>= (printBooks Table)
+processArgs [query, "--yaml"] = getBooks query >>= (printBooks YAML)
+processArgs _ = usage
 
 main :: IO ()
-main = do
-  putStrLn banner
-  query <- prompt "? "
-  books <- getBooks query
-  printBooks books
-  pure ()
+main = getArgs >>= processArgs

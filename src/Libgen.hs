@@ -1,4 +1,3 @@
-{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Libgen where
@@ -22,20 +21,10 @@ data Book = Book
   }
   deriving (Show)
 
-instance Buildable Book where
-  build Book {bookUrl, bookAuthors, bookTitle, bookYear, bookExtension, bookSize} =
-    "title: " +| bookTitle |+ "\n"
-      <> "url: " +| bookUrl |+ "\n"
-      <> "year: " +| bookYear |+ "\n"
-      <> "ext: " +| bookExtension |+ "\n"
-      <> "size: " +| bookSize |+ "\n"
-      <> "authors:\n"
-      <> indentF 4 (blockListF bookAuthors)
-
 type Query = String
 
 getURL :: Query -> URL
-getURL = \x -> "http://libgen.is/search.php?req=" ++ x
+getURL = \x -> "http://libgen.is/search.php?req=" <> x
 
 getBooks :: Query -> IO (Maybe [Book])
 getBooks query = scrapeURL (getURL query) books
@@ -72,7 +61,7 @@ size = do
     (x : _) -> return x
 
 extensions :: [String]
-extensions = ["pdf", "mobi", "epub"]
+extensions = ["pdf", "mobi", "epub", "chm"]
 
 extension :: Scraper String String
 extension = do
