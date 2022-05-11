@@ -6,10 +6,11 @@ UNIX philosophy in mind, which means it works well with other tools such as awk.
 
 Example:
 
-    libgen-cli java | awk -F'|' '$5 ~ /pdf/ {print $1}' | libgen-cli --download -
+    libgen-cli "some book title" | awk -F'|' '$5 ~ /pdf/ {print "$1 $2"}' | xargs libgen-cli -d
 
 
-Run libgen-cli --help to see other options.
+Run libgen-cli --help to see other options. For example, to run interactively
+you can use the -i flag.
 
 Dependencies
 ------------

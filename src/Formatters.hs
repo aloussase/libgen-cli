@@ -1,10 +1,18 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Formatters where
+module Formatters
+  ( format,
+    printBooks,
+    YAML (..),
+    Table (..),
+    BookFormatter,
+  )
+where
 
+import Control.Monad
 import Data.List
-import Fmt
+import Fmt hiding (format)
 import Libgen
 
 class BookFormatter a where
@@ -40,3 +48,7 @@ instance BookFormatter Table where
           "|" +| build bookExtension,
           "|" +| build bookSize
         ]
+
+printBooks :: (BookFormatter f) => f -> Maybe [Book] -> IO ()
+printBooks _ Nothing = pure ()
+printBooks fmt (Just books) = forM_ books (putStrLn . format fmt)

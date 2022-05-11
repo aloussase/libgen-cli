@@ -25,6 +25,7 @@ library
                     , fmt
                     , download-curl
                     , bytestring
+                    , url
     hs-source-dirs:   src
     default-language: Haskell2010
 

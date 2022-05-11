@@ -1,12 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Libgen where
+module Libgen
+  ( getBooks,
+    Book (..),
+  )
+where
 
 import Control.Applicative
 import Control.Monad
 import Data.List
 import Data.Maybe
 import Fmt
+import Network.URL (encString, ok_url)
 import Text.HTML.Scalpel
 import Text.Read
 import Text.Regex
@@ -24,7 +29,7 @@ data Book = Book
 type Query = String
 
 getURL :: Query -> URL
-getURL = \x -> "http://libgen.is/search.php?req=" <> x
+getURL query = encString True ok_url ("http://libgen.is/search.php?req=" <> query <> "&res=100")
 
 getBooks :: Query -> IO (Maybe [Book])
 getBooks query = scrapeURL (getURL query) books
@@ -48,7 +53,7 @@ url :: Scraper String URL
 url = attr "href" $ "a" @: ["title" @= "this mirror"]
 
 authors :: Scraper String [String]
-authors = texts $ "a" @: ["href" @=~ (mkRegex ".*column=author")]
+authors = texts $ "a" @: ["href" @=~ mkRegex ".*column=author"]
 
 title :: Scraper String String
 title = text $ "a" @: [match bookInfo]

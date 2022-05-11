@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Download where
+module Download (downloadBook) where
 
 import Control.Applicative
 import Control.Monad
@@ -9,6 +9,13 @@ import Data.Functor
 import Libgen
 import Network.Curl.Download
 import Text.HTML.Scalpel
+
+downloadBook :: String -> String -> IO ()
+downloadBook url filename = do
+  result <- download url filename
+  case result of
+    Left err -> putStrLn err
+    _ -> pure ()
 
 download :: URL -> FilePath -> IO (Either String ())
 download bookUrl filepath = do
