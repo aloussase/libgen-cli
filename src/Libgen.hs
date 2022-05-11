@@ -66,7 +66,7 @@ extensions = ["pdf", "mobi", "epub", "chm"]
 extension :: Scraper String String
 extension = do
   extensions' <- texts $ "td" @: ["nowrap" @= ""]
-  case filter (\ext -> ext `elem` extensions) extensions' of
+  case filter (`elem` extensions) extensions' of
     [] -> empty
     (x : _) -> return x
 

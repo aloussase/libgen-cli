@@ -9,35 +9,36 @@ maintainer:         agoussas@espol.edu.ec
 -- A copyright notice.
 -- copyright:
 -- category:
-extra-source-files: CHANGELOG.md
+extra-source-files: README
 
 library
-    exposed-modules:  Libgen, Formatters
+    exposed-modules:  Libgen, Formatters, Download
 
     -- Modules included in this library but not exported.
     -- other-modules:
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:    base ^>=4.16.1.0
+    build-depends:    base
                     , scalpel
                     , regex-compat
                     , fmt
+                    , download-curl
+                    , bytestring
     hs-source-dirs:   src
     default-language: Haskell2010
 
 executable libgen-cli
     main-is:          Main.hs
 
-    -- Modules included in this executable, other than Main.
-    -- other-modules:
+    other-modules:  Interactive
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:
-        base ^>=4.16.1.0,
-        libgen-cli,
-        fmt
+          base
+        , libgen-cli
+        , fmt
 
     hs-source-dirs:   app
     default-language: Haskell2010
