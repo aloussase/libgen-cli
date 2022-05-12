@@ -9,7 +9,7 @@ maintainer:         agoussas@espol.edu.ec
 -- A copyright notice.
 -- copyright:
 -- category:
-extra-source-files: README
+extra-source-files: README.md
 
 library
     exposed-modules:  Libgen, Formatters, Download
@@ -40,6 +40,8 @@ executable libgen-cli
           base
         , libgen-cli
         , fmt
+        , ansi-terminal
+        , mtl
 
     hs-source-dirs:   app
     default-language: Haskell2010
