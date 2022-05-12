@@ -34,6 +34,7 @@ commandMap =
     , ("s", search)
     , ("d", downloadBook)
     , ("n", const nextBook)
+    , ("p", const prevBook)
     ]
 
 -- | Welcome banner.
@@ -126,6 +127,15 @@ nextBook = do
     if n > -1
         then modify (\s -> s { currentBook = (n + 1) `rem` nbooks })
         else msg Error "There are no books!"
+
+prevBook :: InteractiveApp
+prevBook = do
+    n      <- gets currentBook
+    nbooks <- gets (length . books)
+    case n of
+        -1 -> msg Error "There are no books"
+        0  -> modify (\s -> s { currentBook = nbooks - 1 })
+        _  -> modify (\s -> s { currentBook = n - 1 })
 
 -- | Download the current book to a file specified by @dest@.
 downloadBook :: [String] -> InteractiveApp
